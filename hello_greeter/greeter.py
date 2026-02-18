@@ -1,6 +1,6 @@
 """
-Core logic — this is where the actual work happens.
-The user's config (api_key, name, language) is passed in, NOT read from env.
+Core logic — config is loaded from env vars / .env on the installed machine.
+Explicit arguments to GreeterConfig override env values.
 """
 from .config import GreeterConfig
 
@@ -16,16 +16,19 @@ TRANSLATIONS = {
 
 
 class Greeter:
-    """Simple greeter that uses user-provided config.
+    """Greeter that reads config from env vars / .env automatically.
 
     Example::
 
-        from hello_greeter import Greeter, GreeterConfig
+        # Set GREETER_API_KEY in .env, then:
+        from hello_greeter import Greeter
+        g = Greeter()
+        print(g.greet())  # "Hello, World!"
 
-        config = GreeterConfig(api_key="my-key", name="Alice", language="fr")
-        g = Greeter(config)
-        print(g.greet())       # "Bonjour, Alice!"
-        print(g.get_api_key()) # "my-key"
+        # Or override with explicit config:
+        from hello_greeter import Greeter, GreeterConfig
+        g = Greeter(GreeterConfig(name="Alice", language="fr"))
+        print(g.greet())  # "Bonjour, Alice!"
     """
 
     def __init__(self, config: GreeterConfig | None = None):
@@ -33,7 +36,8 @@ class Greeter:
 
         if not self.config.api_key:
             raise ValueError(
-                "api_key is required. Pass it via GreeterConfig(api_key='...')"
+                "api_key is required. Set GREETER_API_KEY in your .env file "
+                "or pass it via GreeterConfig(api_key='...')"
             )
 
     def greet(self) -> str:

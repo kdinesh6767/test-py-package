@@ -1,0 +1,43 @@
+name: Build and Release Wheel
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: pip install build
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Verify wheel
+        run: |
+          pip install dist/*.whl
+          python -c "from hello_greeter import Greeter, GreeterConfig; g = Greeter(GreeterConfig(api_key='test')); print(g.greet())"
+
+      - name: List built artifacts
+        run: ls -lh dist/
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: dist/*
+          generate_release_notes: true

@@ -7,7 +7,7 @@ name = "hello-greeter"
 version = "1.0.0"
 description = "A simple hello-world SDK to demonstrate pip-installable packages"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["python-dotenv>=1.0"]
 
 [project.scripts]
 hello-greet = "hello_greeter.cli:main"

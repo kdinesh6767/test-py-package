@@ -5,12 +5,16 @@ Install from GitHub::
 
     pip install git+https://github.com/<org>/hello-world.git
 
-Usage::
+Quick start — create a .env file on your machine::
 
-    from hello_greeter import Greeter, GreeterConfig
+    GREETER_API_KEY=my-secret-key
+    GREETER_NAME=Alice
+    GREETER_LANGUAGE=fr
 
-    config = GreeterConfig(api_key="my-key", name="Alice", language="fr")
-    g = Greeter(config)
+Then::
+
+    from hello_greeter import Greeter
+    g = Greeter()
     print(g.greet())  # "Bonjour, Alice!"
 """
 
