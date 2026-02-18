@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hello-greeter"
+version = "1.0.0"
+description = "A simple hello-world SDK to demonstrate pip-installable packages"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+hello-greet = "hello_greeter.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["hello_greeter*"]
